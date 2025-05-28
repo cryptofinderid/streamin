@@ -1,67 +1,509 @@
+/* styles/Home.module.css */
+
 .container {
-  padding: 2rem 1rem;
-  background: var(--bg-color);
   min-height: 100vh;
-  transition: background 0.3s ease, color 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  background-color: var(--bg-light);
+  /* Menggunakan variabel */
 }
 
-.title {
-  font-size: 1.5rem;
-  margin-bottom: 1rem;
-  color: var(--text-color);
+.main {
+  flex: 1;
+  width: 100%;
+  max-width: 1200px;
+  padding: 40px 20px;
+  animation: fadeIn 1s ease-out;
 }
 
-.grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-  gap: 1rem;
+.header {
+  width: 100%;
+  background-color: var(--card-bg);
+  /* Menggunakan variabel */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  padding: 1rem 0;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
 }
 
-.card {
-  background: var(--card-bg, white);
-  border-radius: 12px;
-  padding: 0.75rem;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  text-align: center;
+.headerContainer {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo a {
+  display: flex;
+  align-items: center;
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: var(--primary-blue);
   text-decoration: none;
 }
 
-.card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
+.logoImage {
+  width: 40px;
+  height: 40px;
+  margin-right: 10px;
 }
 
-.cover {
+.nav {
+  display: flex;
+  gap: 25px;
+}
+
+.navLink {
+  font-size: 1.1rem;
+  color: var(--text-dark);
+  /* Menggunakan variabel */
+  transition: color 0.3s ease;
+  position: relative;
+  padding: 5px 0;
+}
+
+.navLink:hover {
+  color: var(--primary-blue);
+  /* Menggunakan variabel */
+}
+
+.navLink::after {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 2px;
+  display: block;
+  margin-top: 5px;
+  right: 0;
+  background: var(--primary-blue);
+  /* Menggunakan variabel */
+  transition: width 0.3s ease;
+}
+
+.navLink:hover::after {
   width: 100%;
-  height: 240px;
-  object-fit: cover;
-  border-radius: 8px;
-  margin-bottom: 0.75rem;
+  left: 0;
+  background: var(--primary-blue);
+  /* Menggunakan variabel */
 }
 
-.card h2 {
+.hamburger {
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 10px;
+  position: relative;
+  z-index: 1001;
+}
+
+.hamburgerLine {
+  display: block;
+  width: 25px;
+  height: 3px;
+  background-color: var(--text-dark);
+  /* Menggunakan variabel */
+  margin: 5px 0;
+  transition: all 0.3s ease-in-out;
+}
+
+/* Animasi Hamburger ikon */
+.hamburger[aria-expanded="true"] .hamburgerLine:nth-child(1) {
+  transform: translateY(8px) rotate(45deg);
+}
+
+.hamburger[aria-expanded="true"] .hamburgerLine:nth-child(2) {
+  opacity: 0;
+}
+
+.hamburger[aria-expanded="true"] .hamburgerLine:nth-child(3) {
+  transform: translateY(-8px) rotate(-45deg);
+}
+
+
+.main {
+  flex: 1;
+  width: 100%;
+  max-width: 1200px;
+  padding: 40px 20px;
+  animation: fadeIn 1s ease-out;
+}
+
+.heroSection {
+  text-align: center;
+  padding: 80px 20px;
+  background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+  /* Blue gradient yang lebih cerah */
+  border-radius: 15px;
+  margin-bottom: 50px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  animation: pulse 2s infinite ease-in-out;
+}
+
+.heroIcon {
+  width: 80px;
+  /* atau sesuai ukuran yang kamu inginkan */
+  height: 80px;
+  margin-bottom: 10px;
+  animation: fadeIn 1.2s ease-out;
+}
+
+.heroTitle {
+  font-size: 3.5rem;
+  color: var(--primary-blue);
+  /* Menggunakan variabel */
+  margin: 0 0 20px 0;
+  animation: fadeIn 1.2s ease-out;
+}
+
+.heroSubtitle {
+  font-size: 1.5rem;
+  color: var(--text-light);
+  /* Menggunakan variabel */
+  margin-bottom: 40px;
+  animation: fadeIn 1.5s ease-out;
+}
+
+.heroButton {
+  background-color: var(--secondary-accent);
+  /* Menggunakan variabel */
+  color: white;
+  padding: 15px 30px;
+  font-size: 1.2rem;
+  border-radius: 50px;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  animation: fadeIn 1.8s ease-out;
+}
+
+.heroButton:hover {
+  background-color: #5A3598;
+  /* Sedikit lebih gelap dari secondary-accent */
+  transform: translateY(-3px);
+}
+
+.sectionTitle {
+  font-size: 2.5rem;
+  text-align: center;
+  margin-bottom: 40px;
+  color: var(--primary-blue);
+  /* Menggunakan variabel */
+  position: relative;
+  padding-bottom: 10px;
+  animation: fadeIn 1s ease-out;
+}
+
+.sectionTitle::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 4px;
+  background-color: var(--secondary-accent);
+  /* Menggunakan variabel */
+  border-radius: 2px;
+}
+
+.sectionText {
+  font-size: 1.1rem;
+  line-height: 1.8;
+  text-align: center;
+  max-width: 800px;
+  margin: 0 auto 50px auto;
+  color: var(--text-light);
+  /* Menggunakan variabel */
+  animation: fadeIn 1.2s ease-out;
+}
+
+.aboutSection {
+  margin-bottom: 60px;
+  padding: 40px 20px;
+  background-color: var(--card-bg);
+  /* Menggunakan variabel */
+  border-radius: 10px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+}
+
+.featuresSection {
+  margin-bottom: 60px;
+  padding: 40px 20px;
+  background-color: #e8f4fd;
+  /* Warna latar belakang yang lembut, dekat dengan primary */
+  border-radius: 10px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+}
+
+.featuresGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 30px;
+  margin-top: 40px;
+}
+
+.featureCard {
+  background-color: var(--card-bg);
+  /* Menggunakan variabel */
+  padding: 30px;
+  border-radius: 10px;
+  text-align: center;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  will-change: transform;
+}
+
+.featureCard:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 15px 25px rgba(0, 0, 0, 0.15);
+}
+
+.featureCard h3 {
+  font-size: 1.8rem;
+  color: var(--primary-blue);
+  /* Menggunakan variabel */
+  margin-bottom: 15px;
+}
+
+.featureCard p {
   font-size: 1rem;
-  margin: 0.5rem 0;
-  color: var(--card-title-color, #111827);
+  color: var(--text-light);
+  /* Menggunakan variabel */
 }
 
-.card p {
-  font-size: 0.85rem;
-  color: var(--card-desc-color, #6b7280);
+.ctaSection {
+  text-align: center;
+  padding: 60px 20px;
+  background: linear-gradient(45deg, #a1887f 0%, #795548 100%);
+  /* Gradien coklat/earthy tone yang hangat */
+  border-radius: 15px;
+  color: white;
+  margin-bottom: 50px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
 }
 
-/* Mobile responsive: 2 columns max */
-@media (max-width: 600px) {
-  .grid {
-    grid-template-columns: repeat(2, 1fr);
+.ctaSection .sectionTitle {
+  color: white;
+}
+
+.ctaSection .sectionTitle::after {
+  background-color: var(--highlight-yellow);
+  /* Menggunakan variabel */
+}
+
+
+.ctaSection .sectionText {
+  color: #f0f0f0;
+}
+
+.newsletterForm {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+  flex-wrap: wrap;
+  margin-top: 30px;
+}
+
+.newsletterInput {
+  background-color: rgba(255, 255, 255, 0.9);
+  border: none;
+  color: var(--text-dark);
+  /* Menggunakan variabel */
+}
+
+.newsletterInput::placeholder {
+  color: var(--text-light);
+  /* Menggunakan variabel */
+}
+
+
+.newsletterButton {
+  background-color: var(--highlight-yellow);
+  /* Menggunakan variabel */
+  color: var(--text-dark);
+  /* Menggunakan variabel */
+  font-weight: bold;
+}
+
+.newsletterButton:hover {
+  background-color: #e0a800;
+  /* Sedikit lebih gelap dari highlight-yellow */
+  color: var(--text-dark);
+}
+
+
+.footer {
+  width: 100%;
+  background-color: var(--text-dark);
+  /* Menggunakan variabel */
+  color: white;
+  padding: 2rem 0;
+  text-align: center;
+  font-size: 0.9rem;
+}
+
+.footerContainer {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.socialLinks {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+.socialLink {
+  display: flex;
+  align-items: center;
+  color: white;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+.socialLink:hover {
+  color: var(--primary-blue);
+}
+
+/* ================== Responsive Design ================== */
+
+/* Medium devices (tablets, 768px and up) */
+@media (max-width: 768px) {
+  .logo a {
+    font-size: 1.4rem;
   }
 
-  .cover {
-    height: 180px;
+  .logoImage {
+    width: 28px;
+    height: 28px;
+    margin-right: 8px;
   }
 
-  .title {
+  .heroTitle {
+    font-size: 2.8rem;
+  }
+
+  .heroSubtitle {
+    font-size: 1.3rem;
+  }
+
+  .sectionTitle {
     font-size: 2rem;
+  }
+
+  .nav {
+    flex-direction: column;
+    position: absolute;
+    top: 100%;
+    /* Sesuaikan dengan tinggi header */
+    left: 0;
+    width: 100%;
+    background-color: var(--card-bg);
+    /* Menggunakan variabel */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transform: translateY(-100%);
+    transition: transform 0.3s ease-in-out;
+    z-index: 999;
+    gap: 0;
+    margin-top: 0;
+  }
+
+  .navOpen {
+    transform: translateY(0);
+  }
+
+  .navLink {
+    font-size: 1rem;
+    padding: 0.75rem 1rem;
+    text-align: center;
+    border-bottom: 1px solid var(--border-color);
+    /* Menggunakan variabel */
+  }
+
+  .navLink:last-child {
+    border-bottom: none;
+  }
+
+  .hamburger {
+    display: block;
+  }
+
+  .headerContainer {
+    justify-content: space-between;
+  }
+
+  .nav {
+    display: none;
+  }
+
+  .nav.navOpen {
+    display: flex;
+  }
+
+  .featuresGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .newsletterForm {
+    flex-direction: column;
+  }
+
+  .newsletterInput {
+    max-width: 90%;
+  }
+
+  .footerContainer {
+    flex-direction: column;
+  }
+}
+
+/* Small devices (phones, 480px and up) */
+@media (max-width: 480px) {
+  .logo a {
+    font-size: 1.2rem;
+  }
+
+  .logoImage {
+    width: 24px;
+    height: 24px;
+    margin-right: 6px;
+  }
+
+  .heroTitle {
+    font-size: 2.2rem;
+  }
+
+  .heroSubtitle {
+    font-size: 1rem;
+  }
+
+  .heroButton {
+    padding: 12px 25px;
+    font-size: 1rem;
+  }
+
+  .sectionTitle {
+    font-size: 1.8rem;
+  }
+
+  .sectionText {
+    font-size: 0.95rem;
+  }
+
+  .featureCard h3 {
+    font-size: 1.5rem;
+  }
+
+  .featureCard p {
+    font-size: 0.9rem;
   }
 }
