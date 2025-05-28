@@ -1,4 +1,5 @@
 import styles from '../../styles/Detail.module.css';
+import Head from 'next/head';
 import { useRouter } from 'next/router';
 
 export async function getServerSideProps({ params }) {

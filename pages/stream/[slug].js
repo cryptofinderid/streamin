@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import Head from 'next/head';
 import { useRouter } from 'next/router';
 import Select from '../../components/Select'; // custom Select
 import styles from '../../styles/Stream.module.css';
