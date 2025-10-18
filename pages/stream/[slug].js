@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from 'react';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
@@ -141,7 +140,8 @@ export default function Stream() {
       </div>
 
       {/* Tombol Navigasi */}
-      <div className={styles.navButtons}>
+         {/*
+        <div className={styles.navButtons}>
         <button
           onClick={handlePrev}
           disabled={currentIndex === 0}
@@ -157,6 +157,8 @@ export default function Stream() {
           Next ➡
         </button>
       </div>
+      */}
     </div>
   );
 }
+
