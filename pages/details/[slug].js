@@ -18,8 +18,14 @@ export default function DetailPage({ data }) {
   if (!data) return <div className={styles.container}>Data tidak ditemukan.</div>;
 
   // Handler klik episode: navigasi ke /stream/[slug] dengan slug episode
-  const handleEpisodeClick = (episodeSlug) => {
-    router.push(`/stream/${encodeURIComponent(episodeSlug)}`);
+  const handleEpisodeClick = (episodeSlug, episodeNumber) => {
+    router.push({
+      pathname: `/stream/${encodeURIComponent(episodeSlug)}`,
+      query: {
+        title: data.judul,
+        episode: episodeNumber,
+      },
+    });
   };
 
   return (
@@ -51,7 +57,7 @@ export default function DetailPage({ data }) {
               key={ep.id}
               className={styles.episode}
               style={{ cursor: 'pointer' }}
-              onClick={() => handleEpisodeClick(ep.url)} // pastikan ep.url adalah slug episode
+              onClick={() => handleEpisodeClick(ep.url, ep.ch)} // pastikan ep.url adalah slug episode
               title={`Episode ${ep.ch} - Klik untuk nonton`}
             >
               <span>Episode {ep.ch}</span>
@@ -64,3 +70,4 @@ export default function DetailPage({ data }) {
     </div>
   );
 }
+
