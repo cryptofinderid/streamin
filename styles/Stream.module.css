@@ -14,12 +14,12 @@
   font-size: 1.5rem;
   font-weight: 700;
   margin: 0;
-  color: #222;
+  color: var(--card-title-color);
 }
 
 .episodeInfo {
   font-size: 1rem;
-  color: #666;
+  color: var(--text-secondary);
   margin-top: 0.25rem;
 }
 
@@ -83,3 +83,4 @@
     max-height: 80vh;
   }
 }
+
