@@ -6,14 +6,19 @@ import styles from '../../styles/Stream.module.css';
 
 export default function Stream() {
   const router = useRouter();
-  const { slug, title, episode } = router.query;
+  const { slug, title: queryTitle, episode: queryEpisode } = router.query;
 
   const [currentUrl, setCurrentUrl] = useState('');
   const [data, setData] = useState({ data: [] });
   const [currentIndex, setCurrentIndex] = useState(0);
 
-  const [judul, setJudul] = useState(title || '');
-  const [epNumber, setEpNumber] = useState(episode || '');
+  const [title, setTitle] = useState('');
+  const [episode, setEpisode] = useState('');
+
+  useEffect(() => {
+    if (queryTitle) setTitle(queryTitle);
+    if (queryEpisode) setEpisode(queryEpisode);
+  }, [queryTitle, queryEpisode]);
 
   const handleGetData = async (slug) => {
     const response = await fetch(
@@ -43,10 +48,6 @@ export default function Stream() {
         // Jika slug tidak cocok, fallback ke data dari API (tidak set otomatis video pertama)
         setCurrentUrl(allStreams[0].link);
       }
-
-      // Jika belum ada judul/episode dari query, ambil dari API
-      if (!judul) setJudul(info?.judul_anime || info?.anime || '');
-      if (!epNumber) setEpNumber(info?.episode || info?.ch || '');
     };
 
     getData();
@@ -90,17 +91,17 @@ export default function Stream() {
       <Head>
         <title>
           {judul
-            ? `${judul} - Episode ${epNumber || currentIndex + 1}`
+            ? `${title} - Episode ${episode || currentIndex + 1}`
             : 'Streaming Player'}
         </title>
       </Head>
 
       <div className={styles.headerInfo}>
         <h1 className={styles.title}>
-          {judul || 'Judul Tidak Diketahui'}
+          {title || 'Judul Tidak Diketahui'}
         </h1>
         {epNumber && (
-          <p className={styles.episodeInfo}>Episode {epNumber}</p>
+          <p className={styles.episodeInfo}>Episode {episode}</p>
         )}
       </div>
 
@@ -146,6 +147,7 @@ export default function Stream() {
     </div>
   );
 }
+
 
 
 
