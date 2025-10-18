@@ -48,6 +48,15 @@ export default function Stream() {
   }
 
   const streamList = data.data[0]?.stream || [];
+
+  useEffect(() => {
+    if (!streamList.length || !currentUrl) return;
+    const index = streamList.findIndex((item) => item.link === currentUrl);
+    if (index >= 0 && index !== currentIndex) {
+      setCurrentIndex(index);
+    }
+  }, [currentUrl, streamList]);
+
   const serverOptions = streamList.map((item) => ({
     label: item.link.split('/')[2],
     value: item.link,
@@ -123,3 +132,4 @@ export default function Stream() {
     </div>
   );
 }
+
