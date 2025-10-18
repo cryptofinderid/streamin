@@ -6,14 +6,14 @@ import styles from '../../styles/Stream.module.css';
 
 export default function Stream() {
   const router = useRouter();
-  const { slug } = router.query;
+  const { slug, title, episode } = router.query;
 
   const [currentUrl, setCurrentUrl] = useState('');
   const [data, setData] = useState({ data: [] });
   const [currentIndex, setCurrentIndex] = useState(0);
 
-  const [judul, setJudul] = useState('');
-  const [episode, setEpisode] = useState('');
+  const [judul, setJudul] = useState(title || '');
+  const [epNumber, setEpNumber] = useState(episode || '');
 
   const handleGetData = async (slug) => {
     const response = await fetch(
@@ -31,8 +31,6 @@ export default function Stream() {
       setData(result);
 
       const info = result?.data?.[0];
-      setJudul(info?.judul || '');
-      setEpisode(info?.episode || info?.ch || '');
 
       // Cari video yang sesuai dengan slug dan jadikan currentUrl
       const allStreams = result?.data?.[0]?.stream || [];
@@ -45,6 +43,10 @@ export default function Stream() {
         // Jika slug tidak cocok, fallback ke data dari API (tidak set otomatis video pertama)
         setCurrentUrl(allStreams[0].link);
       }
+
+      // Jika belum ada judul/episode dari query, ambil dari API
+      if (!judul) setJudul(info?.judul_anime || info?.anime || '');
+      if (!epNumber) setEpNumber(info?.episode || info?.ch || '');
     };
 
     getData();
@@ -87,7 +89,9 @@ export default function Stream() {
     <div className={styles.container}>
       <Head>
         <title>
-          {judul ? `${judul} - Episode ${episode || currentIndex + 1}` : 'Streaming Player'}
+          {judul
+            ? `${judul} - Episode ${epNumber || currentIndex + 1}`
+            : 'Streaming Player'}
         </title>
       </Head>
 
@@ -95,8 +99,8 @@ export default function Stream() {
         <h1 className={styles.title}>
           {judul || 'Judul Tidak Diketahui'}
         </h1>
-        {episode && (
-          <p className={styles.episodeInfo}>Episode {episode}</p>
+        {epNumber && (
+          <p className={styles.episodeInfo}>Episode {epNumber}</p>
         )}
       </div>
 
@@ -142,5 +146,6 @@ export default function Stream() {
     </div>
   );
 }
+
 
 
