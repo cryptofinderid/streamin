@@ -12,6 +12,9 @@ export default function Stream() {
   const [data, setData] = useState({ data: [] });
   const [currentIndex, setCurrentIndex] = useState(0);
 
+  const [judul, setJudul] = useState('');
+  const [episode, setEpisode] = useState('');
+
   const handleGetData = async (slug) => {
     const response = await fetch(
       `https://apps.animekita.org/api/v1.1.6/chapter.php?url=${slug}&reso=720p`
@@ -26,6 +29,10 @@ export default function Stream() {
     const getData = async () => {
       const result = await handleGetData(slug);
       setData(result);
+
+      const info = result?.data?.[0];
+      setJudul(info?.judul || '');
+      setEpisode(info?.episode || info?.ch || '');
 
       // Cari video yang sesuai dengan slug dan jadikan currentUrl
       const allStreams = result?.data?.[0]?.stream || [];
@@ -48,14 +55,6 @@ export default function Stream() {
   }
 
   const streamList = data.data[0]?.stream || [];
-
-  useEffect(() => {
-    if (!streamList.length || !currentUrl) return;
-    const index = streamList.findIndex((item) => item.link === currentUrl);
-    if (index >= 0 && index !== currentIndex) {
-      setCurrentIndex(index);
-    }
-  }, [currentUrl, streamList]);
 
   const serverOptions = streamList.map((item) => ({
     label: item.link.split('/')[2],
@@ -87,8 +86,19 @@ export default function Stream() {
   return (
     <div className={styles.container}>
       <Head>
-        <title>Streaming Player</title>
+        <title>
+          {judul ? `${judul} - Episode ${episode || currentIndex + 1}` : 'Streaming Player'}
+        </title>
       </Head>
+
+      <div className={styles.headerInfo}>
+        <h1 className={styles.title}>
+          {judul || 'Judul Tidak Diketahui'}
+        </h1>
+        {episode && (
+          <p className={styles.episodeInfo}>Episode {episode}</p>
+        )}
+      </div>
 
       {/* Pilihan Server */}
       <div className={styles.selectWrapper}>
@@ -132,4 +142,5 @@ export default function Stream() {
     </div>
   );
 }
+
 
