@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from 'react';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
@@ -15,6 +16,7 @@ export default function Stream() {
   const [title, setTitle] = useState('');
   const [episode, setEpisode] = useState('');
 
+  // Ambil title & episode dari query (URL)
   useEffect(() => {
     if (queryTitle) setTitle(queryTitle);
     if (queryEpisode) setEpisode(queryEpisode);
@@ -36,22 +38,45 @@ export default function Stream() {
       setData(result);
 
       const info = result?.data?.[0];
+      const allStreams = info?.stream || [];
 
       // Cari video yang sesuai dengan slug dan jadikan currentUrl
-      const allStreams = result?.data?.[0]?.stream || [];
       const matchedIndex = allStreams.findIndex((s) => s.link.includes(slug));
 
       if (matchedIndex >= 0) {
         setCurrentIndex(matchedIndex);
         setCurrentUrl(allStreams[matchedIndex].link);
       } else if (allStreams.length > 0 && !currentUrl) {
-        // Jika slug tidak cocok, fallback ke data dari API (tidak set otomatis video pertama)
+        // fallback: pilih server pertama jika tidak ada kecocokan
+        setCurrentIndex(0);
         setCurrentUrl(allStreams[0].link);
+      }
+
+      // Jika title/episode tidak dikirim lewat query, coba ambil dari response
+      if (!title) {
+        const detectedTitle = info?.judul_anime || info?.anime || info?.title || '';
+        if (detectedTitle) setTitle(detectedTitle);
+      }
+      if (!episode) {
+        const detectedEp = info?.episode || info?.ch || '';
+        if (detectedEp) setEpisode(detectedEp);
       }
     };
 
     getData();
-  }, [slug]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [slug]); // intentionally only depend on slug
+
+  // Sinkronisasi currentIndex setiap kali currentUrl atau daftar stream berubah
+  useEffect(() => {
+    const streamList = data.data?.[0]?.stream || [];
+    if (!streamList.length || !currentUrl) return;
+    const idx = streamList.findIndex((item) => item.link === currentUrl);
+    if (idx >= 0 && idx !== currentIndex) {
+      setCurrentIndex(idx);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentUrl, data]);
 
   if (!data.data.length || !currentUrl) {
     return <div>Loading...</div>;
@@ -60,7 +85,7 @@ export default function Stream() {
   const streamList = data.data[0]?.stream || [];
 
   const serverOptions = streamList.map((item) => ({
-    label: item.link.split('/')[2],
+    label: item.link.split('/')[2] || item.link,
     value: item.link,
   }));
 
@@ -82,27 +107,19 @@ export default function Stream() {
 
   const handleSelectChange = (value) => {
     const index = streamList.findIndex((item) => item.link === value);
-    setCurrentIndex(index);
+    if (index >= 0) setCurrentIndex(index);
     setCurrentUrl(value);
   };
 
   return (
     <div className={styles.container}>
       <Head>
-        <title>
-          {judul
-            ? `${title} - Episode ${episode || currentIndex + 1}`
-            : 'Streaming Player'}
-        </title>
+        <title>{title ? `${title} - Episode ${episode || currentIndex + 1}` : 'Streaming Player'}</title>
       </Head>
 
       <div className={styles.headerInfo}>
-        <h1 className={styles.title}>
-          {title || 'Judul Tidak Diketahui'}
-        </h1>
-        {epNumber && (
-          <p className={styles.episodeInfo}>Episode {episode}</p>
-        )}
+        <h1 className={styles.title}>{title || 'Judul Tidak Diketahui'}</h1>
+        {episode && <p className={styles.episodeInfo}>Episode {episode}</p>}
       </div>
 
       {/* Pilihan Server */}
@@ -128,18 +145,14 @@ export default function Stream() {
         <button
           onClick={handlePrev}
           disabled={currentIndex === 0}
-          className={`${styles.navButton} ${
-            currentIndex === 0 ? styles.disabled : ''
-          }`}
+          className={`${styles.navButton} ${currentIndex === 0 ? styles.disabled : ''}`}
         >
           ⬅ Prev
         </button>
         <button
           onClick={handleNext}
           disabled={currentIndex === streamList.length - 1}
-          className={`${styles.navButton} ${
-            currentIndex === streamList.length - 1 ? styles.disabled : ''
-          }`}
+          className={`${styles.navButton} ${currentIndex === streamList.length - 1 ? styles.disabled : ''}`}
         >
           Next ➡
         </button>
@@ -147,7 +160,3 @@ export default function Stream() {
     </div>
   );
 }
-
-
-
-
